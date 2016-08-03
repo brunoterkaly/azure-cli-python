@@ -3,41 +3,68 @@
 The goal of this post is to illustrate how to use python to manage and support Azure infrastructure. Whether you wish to deploy an SSH Enabled VM or manage Azure Resources and Resource Groups, this post will provide samples and guidance.
 
 There are a few steps to managing infrastructure in Azure using Python applications.
+
+#### Defining an identity
+
 The first step is to create an identity for the python application that includes authentication credentials and role assignments. Once the application has been authenticated, it can begin to manage or create resources in a subscription.
 
-There are a few technologies that are needed. The idea is that you have an application already defined, complete with a URI that describes your application. You will create a tenant in Azure Active directory. Next, you will 
 
-You will then begin working with an Active Directory (AD) application and begin to assign the required permissions to it.
+#### Running an Azure CLI container
 
-https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal-cli/
-https://azure.microsoft.com/documentation/samples/resource-manager-python-template-deployment/
-https://msftstack.wordpress.com/2016/01/05/azure-resource-manager-authentication-with-python/
-
-## Getting started
+Let's begin by running a Docker container that includes the Azure SDK, with both the Azure client tools as well as the Azure Python tooling. The commands below allow you to quickly run in an environment that is containerized without having to install any tooling.
 
 ```bash
 run docker pull azuresdk/azure-cli-python:latest
 run docker run -it azuresdk/azure-cli-python:latest /bin/bash
 ```
 
+
+#### Creating a Service Principal
+
 _Code Snippet 1: Run Azure CLI in Docker container_
 
-![](./images/account-create-sp.jpg)
+This next command provides some important functionality.
+- It creates a service principal (defined below)
+- It provides information that you will need in your Python app when you authenticate. You will need this information to authenticate your app so that it can provision and manage infrastructure in Azure.
+	- Tenant Id
+	- App Id
+	- App Secret
+- It provides outputs commands to assign role permissions (reader or contributor, etc)
 
-_Figure 1:  Creating the Service Principal_
+
+> A **tenant** is a representative of an organization. A tenant is received by a business when it signs up for Azure. A tenant contains information about users in a company (passwords, profile data, permissions). Tenants also contains groups, applications.
+
+> **ServicePrincipal object**: This object represents an instance of your app in your directory tenant. You can apply policies to ServicePrincipal objects, including assigning permissions to the ServicePrincipal that allow the app to read your tenant’s directory data. Whenever you change your Application object, the changes are also applied to the associated ServicePrincipal object in your tenant.
+
 
 ```bash
 az account create-sp
 ```
 
+
 _Code Snippet 2: Create SP_
 
-Output:
+
+Here is what the output of the command looks like.
+
+![](./images/account-create-sp.jpg)
+
+_Figure 1:  Creating the Service Principal_
+
+Output for **az account create-sp.**
+
+#### Additional commands that are available
+
+Notice there are additional commands that have been provided:
+
+- Role Assignment
+- Login code
+- Resetting of credentials
 
 ```
 Service principal has been configured with name: 
-  'http://azure-cli-2016-08-03-00-05-03', 
-   secret: '053e24dc-3623-4c3d-823d-4811bf09fa02'
+  'http://azure-cli-2016-07-03-00-05-03', 
+   secret: 'blah-blah-3623-4c3d-823d-4811bf09fa02'
 
 Useful commands to manage azure:
   Assign a role: 
@@ -56,7 +83,7 @@ Useful commands to manage azure:
 
 _Code Snippet 3: Output for creating SP_
 
-Installing an editor:
+The docker container does not have the VIM editor built in. Since that is my editor of choice, I will install it, as seen in Code Snippet 4.
 
 ```bash
 apt-get update
@@ -65,7 +92,7 @@ apt-get install vim
 
 _Code Snippet 4: Install VIM_
 
-Writing the authorization code
+At this point we are ready for the main event - to authenticate inside of a Python app and display an authorization token.
 
 ```python
 import adal

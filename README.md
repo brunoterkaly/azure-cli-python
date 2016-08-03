@@ -73,9 +73,9 @@ import adal
 authentication_endpoint = 'https://login.microsoftonline.com/'
 resource  = 'https://management.core.windows.net/'
 
-tenant_id =  "72f988bf-86f1-41af-91ab-2d7cd011db47"
+tenant_id =  "blah-86f1-41af-91ab-2d7cd011db47"
 app_id =  "http://azure-cli-2016-08-03-00-05-03"
-app_secret =  "053e24dc-3623-4c3d-823d-4811bf09fa02"
+app_secret =  "secret"
 
 # get_access_token(tenant_id, application_id, application_secret)
 # get an Azure access token using the adal library

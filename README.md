@@ -42,12 +42,12 @@ Service principal has been configured with name:
 Useful commands to manage azure:
   Assign a role: 
      "az role assignment create --assignee 
-	     72c63b4f-a51e-45aa-b42a-5b1427c4f375 --role Contributor"
+	     blah-a51e-45aa-b42a-5b1427c4f375 --role Contributor"
   Log in: 
       "az login --service-principal 
 	     -u http://azure-cli-2016-08-03-00-05-03 
-		 -p 053e24dc-3623-4c3d-823d-4811bf09fa02 
-		 --tenant 72f988bf-86f1-41af-91ab-2d7cd011db47"
+		 -p blah-3623-4c3d-823d-4811bf09fa02 
+		 --tenant blah-86f1-41af-91ab-2d7cd011db47"
 
   Reset credentials: 
        "az account reset-sp-credentials 
@@ -97,3 +97,31 @@ Running the authorization code:
 ![](./images/run-auth-python.jpg)
 
 _Figure 2:  Running Python code to create Auth token_
+
+
+## How to do it with the Azure Python SDK
+
+```python
+
+Here’s an example that creates an Azure Resource Group, lists the resource groups in a subscription, and then deletes the resource group. Based on the read the docs pages here:
+
+from azure.common.credentials import ServicePrincipalCredentials
+from azure.mgmt.resource.resources import ResourceManagementClient
+from azure.mgmt.resource.resources.models import ResourceGroup
+import json
+
+subscription_id = "mysubid"
+
+credentials = ServicePrincipalCredentials(
+    client_id = ‘myclientid,
+    secret = 'mysecret',
+    tenant = 'mytenantid'
+)
+resource_client = ResourceManagementClient(
+    credentials,
+    subscription_id
+)
+```
+
+
+_Code Snippet 6: Official Python SDK_

@@ -103,7 +103,7 @@ _Figure 2:  Running Python code to create Auth token_
 
 ```python
 
-Here’s an example that creates an Azure Resource Group, lists the resource groups in a subscription, and then deletes the resource group. Based on the read the docs pages here:
+Here’s an example that shows how to authenticate with the Azure Python SDK.
 
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.mgmt.resource.resources import ResourceManagementClient

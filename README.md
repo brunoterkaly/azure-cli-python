@@ -101,10 +101,9 @@ _Figure 2:  Running Python code to create Auth token_
 
 ## How to do it with the Azure Python SDK
 
-```python
-
 Here’s an example that shows how to authenticate with the Azure Python SDK.
 
+```python
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.mgmt.resource.resources import ResourceManagementClient
 from azure.mgmt.resource.resources.models import ResourceGroup
